@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Project\\PHPMVC\\":"app"
+            "Program\\PHPMVC\\":"app"
         }
     },
     "autoload-dev": {
