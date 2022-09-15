@@ -1,6 +1,8 @@
 <?php
 namespace Program\PHPMVC\App;
 
+
+
 class Router{
     private static array $routes=[];
 
@@ -23,7 +25,10 @@ class Router{
 
         foreach(self::$routes as $route){
             if($path == $route["path"] && $method == $route["method"]){
-                echo "Contoller : ".$route["controller"]." Function : ".$route["function"];
+                $function=$route["function"];
+
+                $controller=new $route["controller"];
+                $controller->$function();
                 return;
             }
         }
