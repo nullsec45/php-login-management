@@ -1,0 +1,27 @@
+{
+    "name": "ramarff/php_mvc",
+    "description": "Belajar PHP MVC Dari Channel YT PZN;",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Rama Fajar",
+            "email": "ramafajar805@gmail.com"
+        }
+    ],
+    "require": {
+        "php":">=8"
+    },
+    "require-dev": {
+        "phpunit/phpunit":"9.5.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Project\\PHPMVC\\":"app"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Test\\PHPMVC\\":"test"
+        }
+    }
+}
