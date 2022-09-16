@@ -6,12 +6,18 @@ namespace Program\PHPMVC\App;
 class Router{
     private static array $routes=[];
 
-    public static function add(string $method, string $path, string $controller, string $function):void{
+    public static function add(string $method, 
+                               string $path, 
+                               string $controller, 
+                               string $function,
+                               array $middlewares=[]):void{
+
         self::$routes[]=[
             "method" => $method,
             "path" => $path,
             "controller" => $controller,
-            "function" => $function
+            "function" => $function,
+            "middleware" => $middlewares
         ];
     }
 
@@ -26,9 +32,15 @@ class Router{
         foreach(self::$routes as $route){
             $pattern="#^".$route["path"]."$#";
             if(preg_match($pattern, $path, $variables) && $method == $route["method"]){
+
+                // call middleware
+                foreach($route["middleware"] as $middleware){
+                    $instance=new $middleware;
+                    $instance->before();
+                }
+
                 $controller=new $route["controller"];
                 $function=$route["function"];
-                // $controller->$function();
 
                 array_shift($variables);
                 call_user_func_array([$controller, $function], $variables);
