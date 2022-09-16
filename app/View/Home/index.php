@@ -8,5 +8,7 @@
 </head>
 <body>
     <h1><?= $model["body"]; ?></h1>
+    <p>User saat ini:<?= $_SESSION["username"]; ?></p>
+    <p>Password:<?= $_SESSION["password"]; ?></p>
 </body>
 </html>

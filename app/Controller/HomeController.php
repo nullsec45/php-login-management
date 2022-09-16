@@ -17,14 +17,41 @@ class HomeController{
         echo "HomeController.world";
     }
 
-    public function login():void{
+    public function viewRegister(){
+        View::render("Home/register");
+    }
+    public function register(){
+        session_start();
         $request=["username" => $_POST["username"], 
-                 "password" => $_POST["password"]
-                ];
+        "password" => $_POST["password"]];
+        $_SESSION["username"]=$request["username"];
+        $_SESSION["password"]=hash("sha256",$request["password"]);
+
+    }
+
+    public function viewLogin(){
+        View::render("Home/login");
+    }
+
+    public function login():void{
+        session_start();
+        $request=["username" => $_POST["username"], 
+                 "password" => hash("sha256", $_POST["password"])
+        ];
         
         $response=[
-            "message" => "Login Sukses"
+            "message" => "Login Sukses" 
         ];
         // Kirimkan response ke view
+        if($request["username"] === $_SESSION["username"] && $request["password"] === $_SESSION["password"]){
+            // header("Location:/hello");
+            header("Location:/hello");
+            exit();
+        }
+    }
+
+    public function logout(){
+        session_destroy();
+        View::render("Home/logout");
     }
 }
