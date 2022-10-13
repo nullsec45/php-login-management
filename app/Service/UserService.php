@@ -7,6 +7,8 @@ use Program\PHPMVC\Model\UserRegisterRequest;
 use Program\PHPMVC\Repository\UserRepository;
 use Program\PHPMVC\Model\UserRegisterResponse;
 use Program\PHPMVC\Exception\ValidationException;
+use Program\PHPMVC\Model\UserLoginRequest;
+use Program\PHPMVC\Model\UserLoginResponse;
 
 class UserService{
     private UserRepository $userRepository;
@@ -42,10 +44,32 @@ class UserService{
             throw $exception;
        }
     }
-
     private function validateUserRegistrationRequest(UserRegisterRequest $request){
         if($request->name == null || $request->password == null || trim($request->name) == "" || trim($request->password) == ""){
                 throw new ValidationException("Name and password can't blank");
+        }
+    }
+
+    public function login(UserLoginRequest $request): UserLoginResponse{
+        $this->validateUserLoginRequest($request);
+
+        $user=$this->userRepository->findByName($request->name);
+
+        if($user == null){
+            throw new ValidationException("Name or password is wrong");
+        }
+        if(password_verify($request->password, $user->password)){
+            $response=new UserLoginResponse();
+            $response->user=$user;
+            return $response;
+        }else{
+            throw new ValidationException("Name or password is wrong");
+        }
+    }
+
+    private function validateUserLoginRequest(UserLoginRequest $request){
+        if($request->name == null || $request->password == null || trim($request->name) == "" || trim($request->password) == ""){
+            throw new ValidationException("Name and password can't blank");
         }
     }
 }
