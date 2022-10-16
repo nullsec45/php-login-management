@@ -13,13 +13,13 @@ class SessionRepository{
     }
 
     public function save(Session $session): Session{
-        $statement=$this->connection->prepare("INSERT INTO sessions(id, user_id) VALUES (?,?) ");
+        $statement=$this->connection->prepare("INSERT INTO sessions (id, userId) VALUES (?,?)");
         $statement->execute([$session->id, $session->user_id]);
         return $session;
     }
 
-    public function findById(int $id): ?Session{
-        $statement=$this->connection->prepare("SELECT id user_id FROM sessions WHERE id=?");
+    public function findById(string $id): ?Session{
+        $statement=$this->connection->prepare("SELECT id, userId FROM sessions WHERE id=?");
         $statement->execute([$id]);
 
         try{
@@ -27,7 +27,7 @@ class SessionRepository{
                 $session=new Session();
 
                 $session->id=$row["id"];
-                $session->user_id=$row["user_id"];
+                $session->user_id=$row["userId"];   
                 return $session;
             }else{
                 return null;
@@ -37,7 +37,7 @@ class SessionRepository{
         }
     }
 
-    public function deleteById(int $id):void{
+    public function deleteById(string $id):void{
         $statement=$this->connection->prepare("DELETE FROM sessions WHERE id=?");
         $statement->execute([$id]);
     }
